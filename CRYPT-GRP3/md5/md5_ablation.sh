@@ -6,7 +6,7 @@ set -euo pipefail
 : "${MD5_PREFETCH_OPT:=0}"
 : "${MD5_UNROLL_OPT:=0}"
 
-COMMON_CFLAGS="-O3 -I./ -I./md5_ablation -I./md5_test"
+COMMON_CFLAGS="-O3 -I./ -I.. -I./md5_ablation -I./md5_test"
 MD5_DEFS="-DMD5_PAD_OPT=${MD5_PAD_OPT} -DMD5_ALIGN_OPT=${MD5_ALIGN_OPT} -DMD5_PREFETCH_OPT=${MD5_PREFETCH_OPT} -DMD5_UNROLL_OPT=${MD5_UNROLL_OPT}"
 
 echo "MD5 flags: ${MD5_DEFS}"

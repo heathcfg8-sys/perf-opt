@@ -240,6 +240,7 @@ void mix_columns(uint8_t *state) {
  * MixColumns().
  */
 
+#if 0
 // old
 void inv_mix_columns(uint8_t *state) {
 
@@ -258,8 +259,9 @@ void inv_mix_columns(uint8_t *state) {
         }
     }
 }
+#endif
 
-// new
+// new (optimized)
 void inv_mix_columns(uint8_t *state) {
     uint8_t s0, s1, s2, s3;
 
