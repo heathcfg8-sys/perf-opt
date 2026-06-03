@@ -1,6 +1,6 @@
 # CRYPT-GRP3 — 密码学算子性能优化
 
-对 AES-128/192/256、SHA-256 和 MD5 三种密码学算子在嵌入式平台（TI TDA4, Cortex-A72）上进行性能优化，通过多种编译期与运行时优化手段降低执行时间。
+对 AES-128/192/256、SHA-256 和 MD5 三种密码学算子在嵌入式平台上进行性能优化，通过多种编译期与运行时优化手段降低执行时间。
 
 ---
 
@@ -28,16 +28,12 @@ CRYPT-GRP3/
 └── tda4-a72-linux.md       # 构建与运行指南
 ```
 
----
-
 ## 目标平台
 
 - **SoC**: TI TDA4 (Jacinto, ARM Cortex-A72)
 - **架构**: AArch64 / armv8-a
 - **编译器**: `aarch64-linux-gnu-gcc` / `aarch64-linux-gnu-g++`
 - **构建**: CMake, 静态链接
-
----
 
 ## 优化总览
 
@@ -71,44 +67,9 @@ CRYPT-GRP3/
 | 主循环完全展开 | 全部64轮宏展开，消除分支与取模 |
 | **总收益** | 1 MiB数据: 6.52ms → 4.86ms (**1.34x**) |
 
----
-
-## 编译 & 运行
-
-### TDA4 交叉编译
-
-```bash
-mkdir build && cd build
-cmake ..
-make
-```
-
-生成 `aes_encrypt`、`md5_hash`、`sha256_hash` 三个可执行文件，scp 到 TDA4 上直接运行。
-
-### 优化开关
-
-编辑 `param.h` 中的宏定义以开关各组件的优化：
-
-| 宏 | 作用 |
-|---|------|
-| `MD5MemCopyOpt` | MD5 字级内存拷贝 |
-| `MD5MallocOpt` | MD5 静态缓冲复用 |
-| `MD5LoopUnroll` | MD5 主循环展开 |
-| `SHA256RremoveUselessCal` | SHA-256 去除冗余掩码 |
-| `SHA256BranchPred` | SHA-256 分支预测提示 |
-| `AESMergeShift` | AES 合并 ShiftRows |
-
-MD5 消融实验支持通过环境变量 `MD5_PAD_OPT`、`MD5_ALIGN_OPT`、`MD5_PREFETCH_OPT`、`MD5_UNROLL_OPT` 独立开关各项优化。
-
----
 
 ## 基准测试
 
 各组件均对 128B ~ 1MiB 共 14 种数据规模进行性能测试，输出每个规模下的单次执行时间（ns）。详细数据见各子目录下的优化记录文档。
 
----
 
-## 待完成
-
-- RSA（最高4096位）尚未实现
-- 顶层 CMakeLists.txt 路径与实际目录结构存在不一致，需同步更新
