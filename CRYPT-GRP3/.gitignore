@@ -1,0 +1,17 @@
+# Build artifacts
+*.o
+*.obj
+*.out
+*.exe
+md5_test_*
+sha256_test_*
+aes_test
+
+# CMake build directory
+build/
+bin/
+
+# IDE / macOS
+.vscode/
+.idea/
+.DS_Store
